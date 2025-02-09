@@ -68,3 +68,12 @@ func (r *UserRepository) GetUserSessionByRefreshToken(ctx context.Context, refre
 	}
 	return session, nil
 }
+
+func (r *UserRepository) UpdateTokenByRefreshToken(ctx context.Context, token string, refreshToken string) error {
+	return r.DB.Exec("UPDATE user_sessions SET token = ? WHERE refresh_token = ?", token, refreshToken).Error
+}
+
+func (r *UserRepository) DeleteUserSession(ctx context.Context, token string) error {
+	return r.DB.Exec("DELETE FROM user_sessions WHERE token = ?", token).Error
+}
+
