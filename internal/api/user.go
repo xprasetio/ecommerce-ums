@@ -94,3 +94,21 @@ func (api *UserAPI) LoginUser(e echo.Context) error {
 	}
 	return helpers.SendResponseHTTP(e, http.StatusOK, constants.SuccessMessage, resp)
 }
+
+func (api *UserAPI) GetProfile(e echo.Context) error { 
+	var (
+		log = helpers.Logger
+	)
+	token := e.Get("token")
+	tokenClaim, ok := token.(*helpers.ClaimToken)
+	if !ok {
+		log.Error("failed to fetch token")
+		return helpers.SendResponseHTTP(e, http.StatusInternalServerError, constants.ErrServerError, nil)
+	}
+	resp, err := api.UserService.GetProfile(e.Request().Context(), tokenClaim.Username)
+	if err != nil {
+		log.Error("failed to get profile: ", err)
+		return helpers.SendResponseHTTP(e, http.StatusInternalServerError, constants.ErrServerError, nil)
+	}
+	return helpers.SendResponseHTTP(e, http.StatusOK, constants.SuccessMessage, resp)
+}

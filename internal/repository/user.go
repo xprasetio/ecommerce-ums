@@ -22,10 +22,14 @@ func (r *UserRepository) GetUserbyUsername(ctx context.Context, username string,
 		err error
 	)
 
-	err = r.DB.Where("username = ?", username).Where("role = ?", role).First(&user).Error
+	sql := r.DB.Where("username = ?", username)
+	if role != "" {
+		sql = sql.Where("role = ?", role)
+	}
+	err = sql.First(&user).Error
 	if err != nil {
 		return user, err
-	}	
+	}
 	if user.ID == 0 {
 		return user, errors.New("user not found")
 	}
@@ -33,4 +37,34 @@ func (r *UserRepository) GetUserbyUsername(ctx context.Context, username string,
 }
 func (r *UserRepository) InsertNewUserSession(ctx context.Context, session *models.UserSession) error {
 	return r.DB.Create(session).Error
+}
+
+func (r *UserRepository) GetUserSessionByToken(ctx context.Context, token string) (models.UserSession, error) {
+	var (
+		session models.UserSession
+		err     error
+	)
+	err = r.DB.Where("token = ?", token).First(&session).Error
+	if err != nil {
+		return session, err
+	}
+	if session.ID == 0 {
+		return session, errors.New("session not found")
+	}
+	return session, nil
+}
+
+func (r *UserRepository) GetUserSessionByRefreshToken(ctx context.Context, refreshToken string) (models.UserSession, error) {
+	var (
+		session models.UserSession
+		err     error
+	)
+	err = r.DB.Where("refresh_token = ?", refreshToken).First(&session).Error
+	if err != nil {
+		return session, err
+	}
+	if session.ID == 0 {
+		return session, errors.New("session not found")
+	}
+	return session, nil
 }

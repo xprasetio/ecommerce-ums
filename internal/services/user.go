@@ -79,3 +79,18 @@ func (s *UserService) Login(ctx context.Context, req models.LoginRequest, role s
 
 	return response, nil
 }
+
+func (s *UserService) GetProfile(ctx context.Context, username string) (models.User, error) {
+	var (
+		resp models.User
+		err  error
+	)
+
+	resp, err = s.UserRepo.GetUserbyUsername(ctx, username, "")
+	if err != nil {
+		return resp, errors.Wrap(err, "failed to get user by username")
+	}
+	resp.Password = ""
+	resp.Role = ""
+	return resp, nil
+}
