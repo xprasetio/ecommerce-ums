@@ -21,6 +21,7 @@ type IUserService interface {
 	Register(ctx context.Context, req *models.User,role string) (*models.User, error)
 	Login(ctx context.Context, req models.LoginRequest, role string) (models.LoginResponse, error)
 	GetProfile(ctx context.Context, username string) (models.User, error)
+	Logout(ctx context.Context, token string) error
 }
 type IUserAPI interface {
 	RegisterUser(e echo.Context) error
@@ -28,4 +29,5 @@ type IUserAPI interface {
 	LoginAdmin(e echo.Context) error
 	LoginUser(e echo.Context) error
 	GetProfile(e echo.Context) error
+	Logout(e echo.Context) error
 }

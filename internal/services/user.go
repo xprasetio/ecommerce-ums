@@ -91,6 +91,8 @@ func (s *UserService) GetProfile(ctx context.Context, username string) (models.U
 		return resp, errors.Wrap(err, "failed to get user by username")
 	}
 	resp.Password = ""
-	resp.Role = ""
 	return resp, nil
+}
+func (s *UserService) Logout(ctx context.Context, token string) error {
+	return s.UserRepo.DeleteUserSession(ctx, token)
 }

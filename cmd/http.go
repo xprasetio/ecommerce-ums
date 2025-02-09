@@ -23,6 +23,7 @@ func ServeHTTP() {
 	userV1.POST("/login/admin", d.UserAPI.LoginAdmin)
 	userV1.GET("/profile", d.UserAPI.GetProfile, d.MiddlewareValidateAuth)
 	userV1.PUT("/refresh-token", d.RefreshTokenAPI.RefreshToken, d.MiddlewareRefreshToken)
+	userV1.DELETE("/logout", d.UserAPI.Logout, d.MiddlewareValidateAuth)
 
 	e.Start(":" + helpers.GetEnv("PORT", "9001"))
 }
