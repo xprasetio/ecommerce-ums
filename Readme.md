@@ -14,6 +14,8 @@ Ecommerce-UMS adalah sistem manajemen pengguna (User Management System) berbasis
 ```bash
 git clone https://github.com/username/ecommerce-ums.git
 cd ecommerce-ums
+$ go mod tidy  # Mengunduh dependensi
+$ go run main.go #Auto generate migration table
 ```
 
 ### 2️⃣ Menjalankan dengan Docker Compose
@@ -27,10 +29,25 @@ Gunakan perintah berikut untuk memastikan container berjalan dengan baik:
 docker ps
 ```
 ### 4️⃣ Mengakses API
-Untuk mengakses API login, gunakan perintah curl berikut:
+Untuk mengakses API login, gunakan POSTMAN / perintah curl berikut untuk Register
+```bash
+curl -X POST http://localhost:9001/user/v1/register -H "Content-Type: application/json" -d '{
+    "username": "admin",
+    "password": "admin789",
+    "full_name": "Eko Prasetio",
+    "email": "ekoprasetio@gmail.com",
+    "phone_number": "093123883113",
+    "address": "jalan jalan",
+    "dob": "2000-10-10"
+}'
+```
+Untuk mengakses API login, gunakan POSTMAN / perintah curl berikut untuk login
 ```bash
 curl -X POST http://localhost:9001/user/v1/login -H "Content-Type: application/json" -d '{
   "username": "admin",
   "password": "admin789"
 }'
 ```
+
+
+
